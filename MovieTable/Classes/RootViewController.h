@@ -14,6 +14,7 @@
 	NSMutableArray *moviesArray;
 	MovieEditorViewController *movieEditor;
 	Movie *editingMovie;
+	IBOutlet UITableViewCell* nibLoadedCell;
 }
 
 @property(nonatomic, retain) IBOutlet MovieEditorViewController *movieEditor;

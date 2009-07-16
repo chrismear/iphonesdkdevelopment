@@ -110,12 +110,18 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		[[NSBundle mainBundle] loadNibNamed:@"MovieTableCell" owner:self options:NULL];
+		cell = nibLoadedCell;
     }
     
 	// Configure the cell.
 	Movie *aMovie = [moviesArray objectAtIndex:indexPath.row];
-	cell.textLabel.text = aMovie.title;
+	UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
+	titleLabel.text = aMovie.title;
+	UILabel *boxOfficeLabel = (UILabel *)[cell viewWithTag:2];
+	boxOfficeLabel.text = [NSString stringWithFormat:@"%d", [aMovie.boxOfficeGross intValue]];
+	UILabel *summaryLabel = (UILabel *)[cell viewWithTag:3];
+	summaryLabel.text = aMovie.summary;
 
     return cell;
 }

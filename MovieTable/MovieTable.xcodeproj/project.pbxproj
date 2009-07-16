@@ -18,6 +18,7 @@
 		837FC44C100F7D03007BE378 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 837FC44B100F7D03007BE378 /* Movie.m */; };
 		837FC46C100F88BD007BE378 /* MovieEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 837FC46B100F88BD007BE378 /* MovieEditorViewController.m */; };
 		837FC46E100F88C7007BE378 /* MovieEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837FC46D100F88C7007BE378 /* MovieEditorViewController.xib */; };
+		837FC497100F8EFB007BE378 /* MovieTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837FC496100F8EFB007BE378 /* MovieTableCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		837FC46A100F88BD007BE378 /* MovieEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieEditorViewController.h; sourceTree = "<group>"; };
 		837FC46B100F88BD007BE378 /* MovieEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieEditorViewController.m; sourceTree = "<group>"; };
 		837FC46D100F88C7007BE378 /* MovieEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieEditorViewController.xib; sourceTree = "<group>"; };
+		837FC496100F8EFB007BE378 /* MovieTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableCell.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MovieTable-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MovieTable-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 				2899E55F0DE3E45000AC0155 /* RootViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MovieTable-Info.plist */,
+				837FC496100F8EFB007BE378 /* MovieTableCell.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				2899E5600DE3E45000AC0155 /* RootViewController.xib in Resources */,
 				837FC46E100F88C7007BE378 /* MovieEditorViewController.xib in Resources */,
+				837FC497100F8EFB007BE378 /* MovieTableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
