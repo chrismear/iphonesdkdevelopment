@@ -12,6 +12,26 @@
 @implementation RootViewController
 
 @synthesize movieEditor;
+@synthesize sortControl;
+
+- (void)sortMoviesArray
+{
+	NSSortDescriptor *sorter;
+	switch (sortControl.selectedSegmentIndex) {
+		case 0: // sort alpha ascending
+			sorter = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+			break;
+		case 1: // sort alpha descending
+			sorter = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
+			break;
+		case 2: // sort $$ ascending
+			sorter = [[NSSortDescriptor alloc] initWithKey:@"boxOfficeGross" ascending:YES];
+			break;
+	};
+	NSArray *sortDescriptors = [NSArray arrayWithObject:sorter];
+	[moviesArray sortUsingDescriptors:sortDescriptors];
+	[sorter release];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,6 +59,9 @@
 		[self.tableView reloadRowsAtIndexPaths:updatedPaths withRowAnimation:NO];
 		editingMovie = nil;
 	}
+	
+	[self sortMoviesArray];
+	[self.tableView reloadData];
 }
 
 - (IBAction)handleAddTapped
@@ -51,6 +74,12 @@
 	NSIndexPath *newMoviePath = [NSIndexPath indexPathForRow:([moviesArray count] - 1) inSection:0];
 	NSArray *newMoviePaths = [NSArray arrayWithObject:newMoviePath];
 	[self.tableView insertRowsAtIndexPaths:newMoviePaths withRowAnimation:NO];
+}
+
+- (IBAction)handleSortChanged
+{
+	[self sortMoviesArray];
+	[self.tableView reloadData];
 }
 
 /*
