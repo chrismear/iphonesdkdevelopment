@@ -7,7 +7,14 @@
 //
 
 @interface DirectoryViewController : UITableViewController {
+	NSString *directoryPath;
+	NSArray *directoryContents;
 }
+
+@property (nonatomic, retain) NSString *directoryPath;
+@property (nonatomic, retain) NSArray *directoryContents;
+
+- (void)loadDirectoryContents;
 
 @end
  

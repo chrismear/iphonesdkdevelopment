@@ -95,6 +95,14 @@
 					</object>
 					<int key="connectionID">15</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">directoryViewController</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="619226028"/>
+					</object>
+					<int key="connectionID">16</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -199,7 +207,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>FilesystemExplorerAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{681, 348}, {320, 480}}</string>
+					<string>{{202, 173}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -223,7 +231,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">15</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -251,11 +259,13 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>directoryViewController</string>
 							<string>navigationController</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>DirectoryViewController</string>
 							<string>UINavigationController</string>
 							<string>UIWindow</string>
 						</object>

@@ -11,6 +11,32 @@
 
 @implementation DirectoryViewController
 
+@synthesize directoryContents;
+
+- (NSString *)directoryPath
+{
+	return directoryPath;
+}
+
+- (void)setDirectoryPath:(NSString *)p
+{
+	[p retain];
+	[directoryPath release];
+	directoryPath = p;
+	
+	[self loadDirectoryContents];
+	
+	NSString *pathTitle = [directoryPath lastPathComponent];
+	self.title = pathTitle;
+}
+
+- (void)loadDirectoryContents
+{
+	[directoryContents release];
+	directoryContents = [[NSFileManager defaultManager] directoryContentsAtPath:directoryPath];
+	[directoryContents retain];
+}
+
 /*
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,7 +97,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return [directoryContents count];
 }
 
 
@@ -84,8 +110,8 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-	// Configure the cell.
+	
+	cell.textLabel.text = (NSString *)[directoryContents objectAtIndex:indexPath.row];
 
     return cell;
 }
@@ -145,6 +171,7 @@
 
 
 - (void)dealloc {
+	[directoryContents release];
     [super dealloc];
 }
 

@@ -14,6 +14,7 @@
 
 @synthesize window;
 @synthesize navigationController;
+@synthesize directoryViewController;
 
 
 #pragma mark -
@@ -25,6 +26,9 @@
 	
 	[window addSubview:[navigationController view]];
     [window makeKeyAndVisible];
+	
+	// Populate the first view
+	directoryViewController.directoryPath = NSHomeDirectory();
 }
 
 
