@@ -7,6 +7,7 @@
 //
 
 #import "FileOverviewViewController.h"
+#import "FileContentsViewController.h"
 
 
 @implementation FileOverviewViewController
@@ -58,6 +59,17 @@
 		[numberFormatter release];
 		[dateFormatter release];
 	}
+}
+
+- (IBAction)readFileContents
+{
+	FileContentsViewController *fileContentsViewController =
+		[[FileContentsViewController alloc] initWithNibName:@"FileContentsView"
+													 bundle:nil];
+	fileContentsViewController.filePath = filePath;
+	fileContentsViewController.title = [NSString stringWithFormat:@"%@ contents", [filePath lastPathComponent]];
+	[[self navigationController] pushViewController:fileContentsViewController animated:YES];
+	[fileContentsViewController release];
 }
 
 
