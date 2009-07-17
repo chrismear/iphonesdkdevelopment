@@ -8,6 +8,8 @@
 
 #import "DirectoryViewController.h"
 #import "FileOverviewViewController.h"
+#import "CreateDirectoryViewController.h"
+#import "CreateFileViewController.h"
 
 
 @implementation DirectoryViewController
@@ -38,14 +40,14 @@
 	[directoryContents retain];
 }
 
-/*
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	UIBarButtonItem *addButton =
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+													   target:self
+													   action:@selector(showAddOptions)] autorelease];
+	self.navigationItem.rightBarButtonItem = addButton;
 }
-*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,19 +153,60 @@
 */
 
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
+- (void)tableView:(UITableView *)tableView 
+	commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+	forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// handle a delete swipe
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSString *selectedFile = (NSString*)
+		[directoryContents objectAtIndex: indexPath.row];
+		NSString *selectedPath =
+		[directoryPath stringByAppendingPathComponent:
+		 selectedFile];
+		BOOL canWrite =
+		[[NSFileManager defaultManager]
+		 isWritableFileAtPath: selectedPath];
+		if (! canWrite) {
+			// show a UIAlert saying path isn't writable
+			NSString *alertMessage = [NSString stringWithFormat: @"Cannot delete %@", selectedFile];
+			UIAlertView *cantWriteAlert =
+			[[UIAlertView alloc] initWithTitle:@"Not permitted:"
+									   message:alertMessage
+									  delegate:nil
+							 cancelButtonTitle:@"OK"
+							 otherButtonTitles:nil];
+			[cantWriteAlert show];
+			[cantWriteAlert release];
+			return;
+		}
+		
+		// try to delete
+		NSError *err = nil;
+		if (! [[NSFileManager defaultManager] removeItemAtPath: selectedPath error:&err]) {
+			// show a UIAlert saying cannot delete
+			NSString *alertMessage = (err == noErr) ?
+			[NSString stringWithFormat: @"Cannot delete %@", selectedFile] :
+			[NSString stringWithFormat: @"Cannot delete %@, %@",
+			 selectedFile, [err localizedDescription]];
+			UIAlertView *cantDeleteAlert =
+			[[UIAlertView alloc] initWithTitle:@"Can't delete:"
+									   message:alertMessage
+									  delegate:nil
+							 cancelButtonTitle:@"OK"
+							 otherButtonTitles:nil];
+			[cantDeleteAlert show];
+			[cantDeleteAlert release];
+			return;
+		}
+		NSArray *deletedPaths = [NSArray arrayWithObject: indexPath];
+		
+		// refresh display
+		[self loadDirectoryContents];
+		[self.tableView deleteRowsAtIndexPaths: deletedPaths
+		 withRowAnimation: YES];
+	}
 }
-*/
 
 
 /*
@@ -180,6 +223,81 @@
     return YES;
 }
 */
+
+- (void)showAddOptions
+{
+	NSString *sheetTitle = [[NSString alloc] initWithFormat:@"Edit \"%@\"", [directoryPath lastPathComponent]];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:sheetTitle
+															 delegate:self
+													cancelButtonTitle:@"Cancel"
+											   destructiveButtonTitle:NULL
+													otherButtonTitles:@"New File", @"New Directory", NULL];
+	[actionSheet showInView:self.view];
+	[sheetTitle release];
+	[actionSheet release];
+}
+
+
+- (void)createNewFile  {
+	BOOL canWrite = [[NSFileManager defaultManager]
+					 isWritableFileAtPath: self.directoryPath];
+	if (! canWrite) {
+		NSString *alertMessage = @"Cannot write to this directory";
+		UIAlertView *cantWriteAlert =
+		[[UIAlertView alloc] initWithTitle:@"Not permitted:"
+								   message:alertMessage delegate:nil
+						 cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[cantWriteAlert show];
+		[cantWriteAlert release];
+		return;
+	}
+	// present modal view controller to name file
+	CreateFileViewController *createFileViewController =
+	[[CreateFileViewController alloc]
+	 initWithNibName: @"CreateFileView"
+	 bundle:nil];
+	createFileViewController.parentDirectoryPath = directoryPath;
+	createFileViewController.directoryViewController = self;
+	createFileViewController.title = @"Create file";
+	[[self navigationController]
+	 pushViewController:createFileViewController animated:YES];
+	[createFileViewController release];
+}
+
+
+- (void)createNewDirectory
+{
+	BOOL canWrite = [[NSFileManager defaultManager] isWritableFileAtPath:self.directoryPath];
+	if (!canWrite) {
+		NSString *alertMessage = @"Cannot write to this directory";
+		UIAlertView *cantWriteAlert = [[UIAlertView alloc] initWithTitle:@"Not permitted:"
+																 message:alertMessage
+																delegate:nil
+													   cancelButtonTitle:@"OK"
+													   otherButtonTitles:nil];
+		[cantWriteAlert show];
+		[cantWriteAlert release];
+		return;
+	}
+	CreateDirectoryViewController *createDirectoryViewController = [[CreateDirectoryViewController alloc] initWithNibName:@"CreateDirectoryView" bundle:nil];
+	createDirectoryViewController.parentDirectoryPath = directoryPath;
+	createDirectoryViewController.directoryViewController = self;
+	createDirectoryViewController.title = @"Create directory";
+	[[self navigationController] pushViewController:createDirectoryViewController animated:YES];
+	[createDirectoryViewController release];
+	
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet
+clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex == 0) {
+		[self createNewFile];
+	} else if (buttonIndex == 1) {
+		[self createNewDirectory];
+	}
+}
+
 
 
 - (void)dealloc {

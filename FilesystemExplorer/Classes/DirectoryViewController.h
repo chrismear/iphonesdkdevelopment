@@ -6,7 +6,7 @@
 //  Copyright Greenvoice 2009. All rights reserved.
 //
 
-@interface DirectoryViewController : UITableViewController {
+@interface DirectoryViewController : UITableViewController <UIActionSheetDelegate> {
 	NSString *directoryPath;
 	NSArray *directoryContents;
 }
