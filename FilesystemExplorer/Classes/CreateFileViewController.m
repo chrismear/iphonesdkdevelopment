@@ -18,21 +18,28 @@
 @synthesize directoryViewController;
 
 - (void) setUpAsynchronousContentSave {
-	[asyncOutputStream release];
-	[outputData release];
-	outputData = [[fileContentsView.text 
-				   dataUsingEncoding: NSUTF8StringEncoding] retain];
-	outputRange.location = 0;
 	NSString *newFilePath =	[parentDirectoryPath
 							 stringByAppendingPathComponent: fileNameField.text];
 	[[NSFileManager defaultManager] createFileAtPath:newFilePath
 											contents:nil attributes:nil];
-	asyncOutputStream =	[[NSOutputStream alloc] 
-						 initToFileAtPath: newFilePath append: NO];
-	[asyncOutputStream setDelegate: self]; 
-	[asyncOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] 
-								 forMode:NSDefaultRunLoopMode];
-	[asyncOutputStream open];
+	
+	if ([fileContentsView.text length] != 0) {
+		[asyncOutputStream release];
+		[outputData release];
+		outputData = [[fileContentsView.text 
+					   dataUsingEncoding: NSUTF8StringEncoding] retain];
+		outputRange.location = 0;
+		asyncOutputStream =	[[NSOutputStream alloc] 
+							 initToFileAtPath: newFilePath append: NO];
+		[asyncOutputStream setDelegate: self]; 
+		[asyncOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] 
+									 forMode:NSDefaultRunLoopMode];
+		[asyncOutputStream open];
+	} else {
+		[directoryViewController loadDirectoryContents];  
+		[directoryViewController.tableView reloadData];
+		[self.navigationController popViewControllerAnimated:YES]; 
+	}
 }	
 
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
