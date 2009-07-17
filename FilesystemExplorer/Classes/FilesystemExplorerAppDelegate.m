@@ -7,7 +7,7 @@
 //
 
 #import "FilesystemExplorerAppDelegate.h"
-#import "RootViewController.h"
+#import "DirectoryViewController.h"
 
 
 @implementation FilesystemExplorerAppDelegate

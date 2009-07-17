@@ -6,7 +6,8 @@
 //  Copyright Greenvoice 2009. All rights reserved.
 //
 
-@interface RootViewController : UITableViewController {
+@interface DirectoryViewController : UITableViewController {
 }
 
 @end
+ 

@@ -6,10 +6,10 @@
 //  Copyright Greenvoice 2009. All rights reserved.
 //
 
-#import "RootViewController.h"
+#import "DirectoryViewController.h"
 
 
-@implementation RootViewController
+@implementation DirectoryViewController
 
 /*
 - (void)viewDidLoad {
