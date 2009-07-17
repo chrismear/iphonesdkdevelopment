@@ -108,13 +108,24 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
-    
+    	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
 	
 	cell.textLabel.text = (NSString *)[directoryContents objectAtIndex:indexPath.row];
+	
+	NSString *selectedFile = (NSString *)[directoryContents objectAtIndex:indexPath.row];
+	BOOL isDir;
+	NSString *selectedPath = [directoryPath stringByAppendingPathComponent:selectedFile];
+	[[NSFileManager defaultManager] fileExistsAtPath:selectedPath isDirectory:&isDir];
+	
+	if (isDir) {
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	} else {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 
     return cell;
 }
