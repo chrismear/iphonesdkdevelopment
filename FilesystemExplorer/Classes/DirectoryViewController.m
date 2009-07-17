@@ -7,6 +7,7 @@
 //
 
 #import "DirectoryViewController.h"
+#import "FileOverviewViewController.h"
 
 
 @implementation DirectoryViewController
@@ -131,6 +132,11 @@
 		[[self navigationController] pushViewController:directoryViewController animated:YES];
 		directoryViewController.directoryPath = selectedPath;
 		[directoryViewController release];
+	} else {
+		FileOverviewViewController *fileOverviewViewController = [[FileOverviewViewController alloc] initWithNibName:@"FileOverviewView" bundle:nil];
+		[[self navigationController] pushViewController:fileOverviewViewController animated:YES];
+		fileOverviewViewController.filePath = selectedPath;
+		[fileOverviewViewController release];
 	}
 }
 
