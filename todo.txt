@@ -1,0 +1,5 @@
+Work through Core Data Utility Tutorial
+Work through Creating a Managed Object Model with Xcode tutorial
+Update Locations app to use a fetched results controller
+Extend Locations to provide a drill-down interface
+Add an Add sheet to Locations, using a separate managed object context to keep edits in the Add sheet discrete from edits in the rest of the app.
