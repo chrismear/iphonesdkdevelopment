@@ -126,19 +126,41 @@ int main (int argc, const char * argv[]) {
 	}
 	NSLog(@"The managed object model is defined as follows:\n%@", mom);
 	
-	NSManagedObjectContext *mac = managedObjectContext();
+	NSManagedObjectContext *moc = managedObjectContext();
 	
 	NSEntityDescription *runEntity = [[mom entitiesByName] objectForKey:@"Run"];
-	Run *run  = [[Run alloc] initWithEntity:runEntity insertIntoManagedObjectContext:mac];
+	Run *run  = [[Run alloc] initWithEntity:runEntity insertIntoManagedObjectContext:moc];
 	
 	NSProcessInfo *processInfo = [NSProcessInfo processInfo];
 	run.processID = [processInfo processIdentifier];
 	
 	NSError *error = nil;
-	if (![mac save:&error]) {
+	if (![moc save:&error]) {
 		NSLog(@"Error while saving\n%@",
 			  ([error localizedDescription] != nil) ? [error localizedDescription] : @"Unknown Error");
 		exit(1);
+	}
+	
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	[request setEntity:runEntity];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+	[request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+	error = nil;
+	NSArray *array = [moc executeFetchRequest:request error:&error];
+	if ((error != nil) || (array == nil)) {
+		NSLog(@"Error while fetching\n%@",
+			  ([error localizedDescription] != nil) ? [error localizedDescription] : @"Unknown error");
+		exit(1);
+	}
+	
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	[formatter setTimeStyle:NSDateFormatterMediumStyle];
+	NSLog(@"%@ run history", [processInfo processName]);
+	for (run in array) {
+		NSLog(@"On %@ as process ID %d",
+			  [formatter stringForObjectValue:run.date],
+			  run.processID);
 	}
 	
     return 0;
