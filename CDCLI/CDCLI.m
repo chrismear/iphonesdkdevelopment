@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 
 NSManagedObjectModel *managedObjectModel();
+NSManagedObjectContext *managedObjectContext();
 NSString *applicationLogDirectory();
 
 NSManagedObjectModel *managedObjectModel() {
@@ -54,6 +55,40 @@ NSManagedObjectModel *managedObjectModel() {
 	return mom;
 }
 
+NSManagedObjectContext *managedObjectContext()
+{
+	static NSManagedObjectContext *mac = nil;
+	
+	if (mac != nil) {
+		return mac;
+	}
+	
+	mac = [[NSManagedObjectContext alloc] init];
+	
+	NSPersistentStoreCoordinator *coordinator =
+		[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel()];
+	[mac setPersistentStoreCoordinator:coordinator];
+	
+	NSString *STORE_TYPE = NSXMLStoreType;
+	NSString *STORE_FILENAME = @"CDCLI.cdcli";
+	
+	NSError *error;
+	NSURL *url = [NSURL fileURLWithPath:[applicationLogDirectory() stringByAppendingPathComponent:STORE_FILENAME]];
+	
+	NSPersistentStore *newStore = [coordinator addPersistentStoreWithType:STORE_TYPE
+															configuration:nil
+																	  URL:url
+																  options:nil
+																	error:&error];
+	
+	if (newStore == nil) {
+		NSLog(@"Store Configuration Failure\n%@",
+			  ([error localizedDescription] != nil) ? [error localizedDescription] : @"Unknown Error");
+	}
+	
+	return mac;
+}
+
 NSString *applicationLogDirectory() {
 	NSString *LOG_DIRECTORY = @"CDCLI";
 	static NSString *ald = nil;
@@ -89,6 +124,8 @@ int main (int argc, const char * argv[]) {
 		exit(1);
 	}
 	NSLog(@"The managed object model is defined as follows:\n%@", mom);
+	
+	NSManagedObjectContext *mac = managedObjectContext();
 	
     return 0;
 }
