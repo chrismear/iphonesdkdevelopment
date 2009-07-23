@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Run.h"
 
 NSManagedObjectModel *managedObjectModel();
 NSManagedObjectContext *managedObjectContext();
@@ -126,6 +127,19 @@ int main (int argc, const char * argv[]) {
 	NSLog(@"The managed object model is defined as follows:\n%@", mom);
 	
 	NSManagedObjectContext *mac = managedObjectContext();
+	
+	NSEntityDescription *runEntity = [[mom entitiesByName] objectForKey:@"Run"];
+	Run *run  = [[Run alloc] initWithEntity:runEntity insertIntoManagedObjectContext:mac];
+	
+	NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+	run.processID = [processInfo processIdentifier];
+	
+	NSError *error = nil;
+	if (![mac save:&error]) {
+		NSLog(@"Error while saving\n%@",
+			  ([error localizedDescription] != nil) ? [error localizedDescription] : @"Unknown Error");
+		exit(1);
+	}
 	
     return 0;
 }
