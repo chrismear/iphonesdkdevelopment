@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 
 NSManagedObjectModel *managedObjectModel();
+NSString *applicationLogDirectory();
 
 NSManagedObjectModel *managedObjectModel() {
 	static NSManagedObjectModel *mom = nil;
@@ -53,7 +54,7 @@ NSManagedObjectModel *managedObjectModel() {
 	return mom;
 }
 
-NSString *applicationDirectory() {
+NSString *applicationLogDirectory() {
 	NSString *LOG_DIRECTORY = @"CDCLI";
 	static NSString *ald = nil;
 	
@@ -78,11 +79,12 @@ NSString *applicationDirectory() {
 	return ald;
 }
 
+
 int main (int argc, const char * argv[]) {
 	objc_startCollectorThread();
 	
 	NSManagedObjectModel *mom = managedObjectModel();
-	if (applicationDirectory() == nil) {
+	if (applicationLogDirectory() == nil) {
 		NSLog(@"Could not find application log directory\nExiting...");
 		exit(1);
 	}
